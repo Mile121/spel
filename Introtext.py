@@ -4,7 +4,7 @@ import os
 def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def scroll_text(text, speed=0.7):
+def scroll_text(text, speed=0.2):
     width = 80
     x = 0
     while True:
