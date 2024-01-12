@@ -1,5 +1,4 @@
-#lägger till kommentar
-
+#Vi leta efter inromation om hur man gör en skjut scen
 def skriv_Framdörr ():
     Framdörr="Du står framför banken och du ska välja mellan att, 1 spränga dörren eller 2 öppna dörren"
     print(Framdörr)
