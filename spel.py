@@ -1,105 +1,141 @@
-
-#Vi leta efter inromation om hur man gör en skjut scen
-def skriv_Framdörr ():
-    Framdörr="Du står framför banken och du ska välja mellan att, 1 spränga dörren eller 2 öppna dörren"
-    print(Framdörr)
-
-
-skriv_Framdörr()
-
-
-
-
-
-
-while True:
-
-    menyval = input("""
-                    1.Spränga framdörren
-                    2.Öppna dörren
-
-
-
-                       """)
-    
-    if menyval == '1': 
-         print("Du sprängde framdörren till banken, perfekt. Nu är du inne i banken") 
-
-    
-    if menyval == '2':
-        print("Du valde att öppna dörren till banken nu är du i banken utan att någon har märkt")
-        print("En vakt kommer framför dig och du måste skjuta honom")
-
-       
-
-import os
-import random
 import time
+import random
 
-# Funktion för att rita spelplanen
-def draw_board(player_pos, enemy_pos, projectiles):
-    os.system("clear" if os.name == "posix" else "cls")
-    for i in range(10):
-        row = ""
-        for j in range(20):
-            if (i, j) == player_pos:
-                row += "P"
-            elif (i, j) == enemy_pos:
-                row += "E"
-            elif (i, j) in projectiles:
-                row += "*"
-            else:
-                row += "-"
-        print(row)
-    print("Use A and D to move, and space to shoot.")
+def start():
+    # Välkomstmeddelande och instruktioner för spelet
+    print("Du befinner dig vid bankens entré och ser två möjliga ingångar.")
+    print("1. Spräng dörren och gå in")
+    print("2. Gå in genom dörren")
 
-# Funktion för att uppdatera positionerna
-def update_positions(player_pos, enemy_pos, projectiles):
-    projectiles = [(x, y - 1) for x, y in projectiles if y > 0]
-    return player_pos, enemy_pos, projectiles
+    # Läs spelarens val
+    val = input('Välj ett alternativ, (1/2): ')
 
-# Huvudspelloop
-def main():
-    player_pos = (9, 9)
-    enemy_pos = (0, random.randint(0, 19))
-    projectiles = []
+    if val == '1':
+        Skjutscen()
+    elif val == '2':
+        Hittavalvet()
+    else:
+        print("Ogiltigt val. Försök igen.")
+        start()
 
-    while True:
-        draw_board(player_pos, enemy_pos, projectiles)
+def Skjutscen():
+    # Spelare stöter på en vakt och måste välja mellan att övertala eller skjuta
+    print('Du går genom entren och stöter på en vakt')
+    print('Vill du försöka övertala honom eller skjuta honom?')
+    print('1. Övertala vakten')
+    print('2. Skjut honom')
 
-        # Uppdatera positioner
-        player_pos, enemy_pos, projectiles = update_positions(player_pos, enemy_pos, projectiles)
+    # Läs spelarens val
+    val2 = input('Välj ett alternativ, (1/2): ')
+    
+    if val2 == '1':
+        print('Du lyckades tyvärr inte och förlorade')
+        start()
+    elif val2 == '2':
+        Vakt()
+    else:
+        print("Ogiltigt val. Försök igen.")
+        Skjutscen()
 
-        # Kontrollera kollision med fienden
-        if player_pos == enemy_pos:
-            print("Game Over!")
-            break
+def Vakt():
+    # Spelare försöker skjuta vakten med en vattenpistol
+    print("Du väljer att skjuta säkerhetsvakten.")
+    print("Du tar fram din vattenpistol och siktar på vakten.")
+    print("Målet är att pricka vakten för att distrahera honom.")
+    
+    försök = 3  # Antal försök att pricka vakten
 
-        # Skapa en ny fiende om den tidigare har nått botten
-        if enemy_pos[0] == 9:
-            enemy_pos = (0, random.randint(0, 19))
-
-        # Läs in tangenttryckningar
-        move = input()
-        if move == "a" and player_pos[1] > 0:
-            player_pos = (player_pos[0], player_pos[1] - 1)
-        elif move == "d" and player_pos[1] < 19:
-            player_pos = (player_pos[0], player_pos[1] + 1)
-        elif move == " ":
-            projectiles.append((player_pos[0] - 1, player_pos[1]))
-
-        time.sleep(0.1)
-
-if __name__ == "__main__":
-    main()
-
-
-
-
+    while försök > 0:
+        print(f"Du har {försök} försök kvar.")
+        skjut_val = input("Tryck 'Enter' för att skjuta: ")
         
+        # Slumpmässigt beslut om skottet träffar eller inte
+        if random.choice([True, False]):
+            print("Du träffar vakten!")
+            Hittavalvet()
+        
+        print("Du missade! Vakten märker dig.")
+        försök -= 1
 
+    print("Du har inga fler försök kvar. Vakten utlöser larmet.")
+    start()
 
+def Hittavalvet():
+    # Spelare kommer till en korridor med två vägar
+    print('Du kommer till en korridor med två vägar, vill du gå 1. Höger eller 2. vänster?')
+    # Läs spelarens val
+    val3 = input('Välj ett alternativ, (1/2): ')
+    
+    if val3 == '1':
+        # Spelare hittar ett papper med koden 1234
+        print('Du gick in till ett kontor där du hittade ett papper som det stod 1234 på')
+        Hittavalvet()
+        
+    elif val3 == '2':
+        # Spelare kommer till ett rum med en röd knapp
+        print('Du kommer till ett rum där du ser en röd knapp')
+        print('Vad vill du göra?')
+        print('1. Trycka på knappen')
+        print('2. Låta bli att trycka')    
+        
+        # Läs spelarens val
+        val4 = input('Välj ett alternativ, (1/2): ')
+        
+        if val4 == '1':
+            # Spelare trycker på knappen och låser alla dörrar
+            print('Du tryckte på knappen och alla dörrar till banken låstes, ingen kan förfölja dig')
+            Valvet()
+        elif val4 == '2':
+            # Spelare låter bli att trycka och blir gripen av polisen
+            print('Alla dörrar var öppna och polisen kom och grep dig')
+            start()
+        else:
+            print("Ogiltigt val. Försök igen.")
+            Hittavalvet()
 
+def Valvet():
+    # Spelare kommer fram till valvet och måste skriva in koden
+    print('Du kommer fram till valvet men du måste skriva in en kod för att ta dig in')
+    print('Du har tre försök på dig')
+    print('1. Skriv in koden')
+    print('2. Gå runt i banken för att hitta ledtråd')
+    
+    # Läs spelarens val
+    val5 = input('Välj ett alternativ, (1/2): ')
+
+    if val5 == '1':
+        # Spelare väljer att skriva in koden
+        Koden()
+    elif val5 == '2':
+        # Spelare väljer att gå runt för att hitta ledtråd
+        Hittavalvet()
+    else:
+        print("Ogiltigt val. Försök igen.")
+        Valvet()
+
+def Koden():
+    # Spelare gissar koden med tre försök
+    rätt_svar = "1234"
+    antal_försök = 3
+
+    while antal_försök > 0:
+        gissning = input("Gissa koden (fyra siffror): ")
+
+        if gissning == rätt_svar:
+            # Spelare har gissat rätt och vunnit
+            print("Grattis, du har gissat rätt! Du har vunnit!!!")
+            start()
+        else:
+            # Felaktig gissning, spelaren förlorar ett försök
+            antal_försök -= 1
+            print(f"Felaktig gissning. Du har {antal_försök} försök kvar.")
+
+    # Spelare har använt alla försök och förlorar
+    if antal_försök == 0:
+        print("Tyvärr, du har använt alla försök. Rätt svar var 1234.")
+
+# Starta spelet genom att anropa start-funktionen
+start()
 
 
 
